@@ -96,23 +96,15 @@ def comp_thinking():
     thinking_popup.after(2000, lambda: thinking_popup.destroy()
                          )  # Destroy the widget after 2 seconds
 
-    # choice_fun()
-
-    # confirmation_popup = Toplevel(game_window)
-    # confirmation_popup.after(2000)  # TODO: fix error causing error on thinking_popup
-    # confirmation_popup.iconbitmap(
-    #    r"C:\Users\sreya\Desktop\Rock Paper Scissor Game project\icon1.ico")
-    # def choice_fun():
-
-    #    time.sleep(3)
-    #    info1 = Label(choice_frame, text='Your Choice is.....')
-    #    info1.config(font=('Fira', 20))
-    #    info1.grid(row=5)
-    #    info2 = Label(choice_frame, text='Computer Choice is.....')
-    #    info2.config(font=('Fira', 20))
-    #    info2.grid(row=6)
-    # confirmation_popup.after(2000, lambda: thinking_popup.destroy()
-    #                         )  # Destroy the widget after 2 sec#onds
+    time.sleep(3)
+    info1 = Label(choice_frame, text='Your Choice is.....')
+    info1.config(font=('Fira', 20))
+    info1.grid(row=5)
+    info2 = Label(choice_frame, text='Computer Choice is.....')
+    info2.config(font=('Fira', 20))
+    info2.grid(row=6)
+    confirmation_popup.after(2000, lambda: thinking_popup.destroy()
+                             )  # Destroy the widget after 2 sec#onds
 
 # selection and greeting function
 
