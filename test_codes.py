@@ -88,7 +88,7 @@ def about_us():
                       bd=1, relief=SUNKEN, anchor=W)
     statusbar.pack(side=BOTTOM, fill=X, anchor=W)
 
-# define function for about us menu
+# define function for rules menu
 
 
 def rules():
