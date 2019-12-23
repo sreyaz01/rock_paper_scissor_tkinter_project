@@ -1,6 +1,56 @@
 from tkinter import *
+from tkinter import messagebox
 import random
 import time
+
+
+# game logic
+game = ['ROCK', 'PAPER', 'SCISSOR']
+
+
+def comp_select():
+    global comp_selection
+    number = [0, 1, 2]
+    comp_choice = random.choice(number)
+    comp_selection = game[comp_choice]
+
+
+def user_selection(u):
+    global player_selection
+    player_selection = game[u]
+
+
+# Score for final result
+comp_score = 0
+player_score = 0
+
+
+def winning():
+    global comp_score
+    global player_score
+    if player_selection == comp_selection:
+        info1['text'] = 'Its a Tie'
+
+    if player_selection == 'ROCK' and comp_selection == "SCISSOR":
+        info1['text'] = 'PLAYER WINS....'
+        player_score += 1
+    if player_selection == 'PAPER' and comp_selection == "SCISSOR":
+        info1['text'] = '  COMPUTER WINS....'
+        comp_score += 1
+
+    if player_selection == 'ROCK' and comp_selection == "PAPER":
+        info1['text'] = '  COMPUTER WINS....'
+        comp_score += 1
+    if player_selection == 'SCISSOR' and comp_selection == "PAPER":
+        info1['text'] = 'PLAYER WINS....'
+        player_score += 1
+
+    if player_selection == 'SCISSOR' and comp_selection == "ROCK":
+        info1['text'] = '  COMPUTER WINS....'
+        comp_score += 1
+    if player_selection == 'PAPER' and comp_selection == "ROCK":
+        info1['text'] = 'PLAYER WINS....'
+        player_score += 1
 
 
 root = Tk()
@@ -81,6 +131,7 @@ welcome.pack(padx=12, pady=12)
 
 # creating computer thinking Popoup
 def comp_thinking():
+    global info1
     thinking_popup = Toplevel(game_window)
     thinking_popup.iconbitmap(
         r"resource\icon1.ico")
@@ -96,43 +147,59 @@ def comp_thinking():
     thinking_popup.after(2000, lambda: thinking_popup.destroy()
                          )  # Destroy the widget after 2 seconds
 
+    # TODO: reset label everytime when rado button is pressed
+
     time.sleep(3)
-    info1 = Label(choice_frame, text='Your Choice is.....')
+    comp_select()
+    user_selection(v.get())
+    info1 = Label(choice_frame, text='Your Choice is.....'+player_selection)
     info1.config(font=('Fira', 20))
     info1.grid(row=5)
-    info2 = Label(choice_frame, text='Computer Choice is.....')
+    info2 = Label(choice_frame, text='Computer Choice is.....'+comp_selection)
     info2.config(font=('Fira', 20))
     info2.grid(row=6)
-    confirmation_popup.after(2000, lambda: thinking_popup.destroy()
-                             )  # Destroy the widget after 2 sec#onds
+    time.sleep(5)
+    winning()
+
 
 # selection and greeting function
 
 
 def submit():
-    # greeting
-    final_name = name.get().title()
-    hello = Label(choice_frame, text='Hello!! '+final_name)
-    hello.config(font=("Fira", 14))
-    hello.grid(row=0)
-    choice_label = Label(choice_frame, text="Please choose your option")
-    choice_label.config(font=("Fira", 14))
-    choice_label.grid(row=1)
+    global v
 
-# Radio button for taking input from user
-    v = IntVar()
-    r1 = Radiobutton(choice_frame, text='Rock', command=comp_thinking, relief='raised',
-                     padx=2, borderwidth=2, variable=v, value=1)
-    r1.config(font=('Fira', 13))
-    r1.grid(row=2, pady=4)
-    r2 = Radiobutton(choice_frame, text="Paper", command=comp_thinking, relief='raised',
-                     padx=2, borderwidth=2, variable=v, value=2)
-    r2.config(font=('Fira', 13))
-    r2.grid(row=3, pady=4)
-    r3 = Radiobutton(choice_frame, text='Scissor', command=comp_thinking, relief='raised',
-                     padx=2, borderwidth=2, variable=v, value=3)
-    r3.config(font=('Fira', 13))
-    r3.grid(row=4, pady=4)
+    # greetings
+    if name.get():
+        if name.get().isalpha():
+            sorted
+            final_name = name.get().title()
+            name.delete(0, END)  # clear input field after taking input from user
+            hello = Label(choice_frame, text='Hello!! '+final_name)
+            hello.config(font=("Fira", 14))
+            hello.grid(row=0)
+            choice_label = Label(choice_frame, text="Please choose your option")
+            choice_label.config(font=("Fira", 14))
+            choice_label.grid(row=1)
+
+            # Radio button for taking input from user
+            v = IntVar()
+            rock_button = Radiobutton(choice_frame, text='Rock', command=comp_thinking, relief='raised',
+                                      padx=2, borderwidth=2, variable=v, value=0)
+            rock_button.config(font=('Fira', 13))
+            rock_button.grid(row=2, pady=4)
+            paper_button = Radiobutton(choice_frame, text="Paper", command=comp_thinking, relief='raised',
+                                       padx=2, borderwidth=2, variable=v, value=1)
+            paper_button.config(font=('Fira', 13))
+            paper_button.grid(row=3, pady=4)
+            scissor_button = Radiobutton(choice_frame, text='Scissor', command=comp_thinking, relief='raised',
+                                         padx=2, borderwidth=2, variable=v, value=2)
+            scissor_button.config(font=('Fira', 13))
+            scissor_button.grid(row=4, pady=4)
+        else:
+            error_box = messagebox.showerror('Error', "Name Can not be Numeric")
+
+    else:
+        error_box = messagebox.showerror('Error', 'Please Input Your Name First')
 
 
 # creation of game game_window
@@ -144,12 +211,12 @@ def proceed():
     global submit_b1
     global name
     global submenu_creation
+    global name_check
 
     # game window creation
     game_window = Toplevel(root)
     game_window.geometry('375x370')
-    # TODO : causing error for minimizing window
-    game_window.iconbitmap(r"resource\icon1.ico")
+    game_window.iconbitmap(r"resource\icon1.ico")  # TODO : causing error for minimizing window
 
     # menubar in game window ## TODO: error while creating menubar menubar not creating
     menubar = Menu(game_window)
