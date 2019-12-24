@@ -5,14 +5,16 @@ import time
 
 
 # game logic
-game = ['ROCK', 'PAPER', 'SCISSOR']
+# using extra text on 0 index because of radio button selection method if we pur 0 in radio button the button will be selected while launching programm
+game = ['TEXT', 'ROCK', 'PAPER', 'SCISSOR']
 
 
 def comp_select():
     global comp_selection
-    number = [0, 1, 2]
+    number = [1, 2, 3]
     comp_choice = random.choice(number)
     comp_selection = game[comp_choice]
+    computer_slection.set('Computer Choice is '+comp_selection)
 
 
 def user_selection(u):
@@ -20,7 +22,7 @@ def user_selection(u):
     player_selection = game[u]
 
 
-# Score for final result
+# Score update for whole game
 comp_score = 0
 player_score = 0
 
@@ -29,27 +31,27 @@ def winning():
     global comp_score
     global player_score
     if player_selection == comp_selection:
-        info1['text'] = 'Its a Tie'
+        winner.set('Its a Tie')
 
     if player_selection == 'ROCK' and comp_selection == "SCISSOR":
-        info1['text'] = 'PLAYER WINS....'
+        winner.set('PLAYER WINS....')
         player_score += 1
     if player_selection == 'PAPER' and comp_selection == "SCISSOR":
-        info1['text'] = '  COMPUTER WINS....'
+        winner.set('COMPUTER WINS....')
         comp_score += 1
 
     if player_selection == 'ROCK' and comp_selection == "PAPER":
-        info1['text'] = '  COMPUTER WINS....'
+        winner.set('COMPUTER WINS....')
         comp_score += 1
     if player_selection == 'SCISSOR' and comp_selection == "PAPER":
-        info1['text'] = 'PLAYER WINS....'
+        winner.set('PLAYER WINS....')
         player_score += 1
 
     if player_selection == 'SCISSOR' and comp_selection == "ROCK":
-        info1['text'] = '  COMPUTER WINS....'
+        winner.set('COMPUTER WINS....')
         comp_score += 1
     if player_selection == 'PAPER' and comp_selection == "ROCK":
-        info1['text'] = 'PLAYER WINS....'
+        winner.set('PLAYER WINS....')
         player_score += 1
 
 
@@ -76,7 +78,7 @@ def about_us():
         about, text='''This is a simple game build using Python Tkinter
      by @kmvishu and @sreyaz''')
     about_msg.config(font=("Fira", 15))
-    about_msg.pack()
+    about_msg.pack(padx=12, pady=12)
 
     about_icon = PhotoImage(
         file=r'resource\about_us.png')
@@ -88,7 +90,7 @@ def about_us():
                       bd=1, relief=SUNKEN, anchor=W)
     statusbar.pack(side=BOTTOM, fill=X, anchor=W)
 
-# define function for about us menu
+# define function for rules menu
 
 
 def rules():
@@ -131,7 +133,10 @@ welcome.pack(padx=12, pady=12)
 
 # creating computer thinking Popoup
 def comp_thinking():
+    global winner
     global info1
+    global computer_slection
+
     thinking_popup = Toplevel(game_window)
     thinking_popup.iconbitmap(
         r"resource\icon1.ico")
@@ -147,15 +152,19 @@ def comp_thinking():
     thinking_popup.after(2000, lambda: thinking_popup.destroy()
                          )  # Destroy the widget after 2 seconds
 
-    # TODO: reset label everytime when rado button is pressed
+    # TODO: reset label everytime when radio button is pressed
 
     time.sleep(3)
+    computer_slection = StringVar()
     comp_select()
     user_selection(v.get())
-    info1 = Label(choice_frame, text='Your Choice is.....'+player_selection)
+
+    winner = StringVar()
+    info1 = Label(choice_frame, textvariable=winner)
     info1.config(font=('Fira', 20))
     info1.grid(row=5)
-    info2 = Label(choice_frame, text='Computer Choice is.....'+comp_selection)
+
+    info2 = Label(choice_frame, textvariable=computer_slection)
     info2.config(font=('Fira', 20))
     info2.grid(row=6)
     time.sleep(5)
@@ -184,15 +193,15 @@ def submit():
             # Radio button for taking input from user
             v = IntVar()
             rock_button = Radiobutton(choice_frame, text='Rock', command=comp_thinking, relief='raised',
-                                      padx=2, borderwidth=2, variable=v, value=0)
+                                      padx=2, borderwidth=2, variable=v, value=1)
             rock_button.config(font=('Fira', 13))
             rock_button.grid(row=2, pady=4)
             paper_button = Radiobutton(choice_frame, text="Paper", command=comp_thinking, relief='raised',
-                                       padx=2, borderwidth=2, variable=v, value=1)
+                                       padx=2, borderwidth=2, variable=v, value=2)
             paper_button.config(font=('Fira', 13))
             paper_button.grid(row=3, pady=4)
             scissor_button = Radiobutton(choice_frame, text='Scissor', command=comp_thinking, relief='raised',
-                                         padx=2, borderwidth=2, variable=v, value=2)
+                                         padx=2, borderwidth=2, variable=v, value=3)
             scissor_button.config(font=('Fira', 13))
             scissor_button.grid(row=4, pady=4)
         else:
